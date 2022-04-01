@@ -18,7 +18,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 export const MuiSelect = styled((props) => (
   <Select {...props} IconComponent={ExpandMoreIcon} />
 ))(({ theme }) => ({
-  "& .MuiSelect-icon": {
+  "& .MuiSelect-icon": { 
     color: "#000",
     fontSize: "18px",
   },
@@ -41,7 +41,7 @@ const textStyle = {
   top: -10,
 };
 
-export default function BasicCard() {
+export default function creditCardForm() {
   return (
     <>
       <Grid
