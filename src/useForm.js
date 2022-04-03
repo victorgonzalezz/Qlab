@@ -30,6 +30,9 @@ const useForm = () => {
     }
 
     const handleSubmit = e => {
+      console.log(e, "oi")
+      console.log(values, "oi")
+      
         e.preventDefault()
         setErrors(validateInfo(values))
     };

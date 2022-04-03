@@ -15,7 +15,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import FormHelperText from "@mui/material/FormHelperText";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Alert } from "@mui/material";
+import { Alert, MenuItem } from "@mui/material";
 
 export const MuiSelect = styled((props) => (
   <Select {...props} IconComponent={ExpandMoreIcon} />
@@ -51,16 +51,17 @@ export default function CreditCardForm() {
         <Cards
           number={values.cardNumber}
           name={values.cardName}
-          expiryMonth={values.expirationMonth}
-          expiryYear={values.expirationYear}
+          expiry={`${values.expirationMonth}${values.expirationYear}`}
           cvc={values.cardSecurityCode}
           focused={values.focus}
         />
       </Box>
       <Grid container xs={12} sm={12} item justifyContent="center">
+        <form onSubmit={handleSubmit}>
         <Card sx={{ margin: 2, borderRadius: 5, maxWidth: 480 }}>
           <CardContent sx={{ marginTop: "8rem" }}>
             <Grid xs={12} sm={12} item>
+
               <FormControl fullWidth variant="outlined">
                 <FormHelperText id="card-number" sx={{ ...textStyle }}>
                   Card Number
@@ -75,7 +76,7 @@ export default function CreditCardForm() {
                   onChange={handleChange}
                   onFocus={handleFocus}
                   isValid={errors.cnumber}
-                  onSubmit={handleSubmit}
+                  
                   variant="outlined"
                 />
               </FormControl>
@@ -97,8 +98,8 @@ export default function CreditCardForm() {
                   value={values.cardName}
                   onChange={handleChange}
                   onFocus={handleFocus}
-                  onSubmit={handleSubmit}
-                  //  isValid={errors.cname}
+                
+                   isValid={errors.cname}
                   variant="outlined"
                 />
               </FormControl>
@@ -121,16 +122,21 @@ export default function CreditCardForm() {
                       Expiration Date
                     </FormHelperText>
                     <MuiSelect
-                      type="text"
-                      id="cardExpirationMonth"
-                      name="cardExpirationMonth"
+                      type="select"
+                      id="expirationMonth"
+                      name="expirationMonth"
                       placeholder="MM"
                       value={values.expirationMonth}
                       onChange={handleChange}
                       onFocus={handleFocus}
-                      // isValid={errors.cexp}
+                      isValid={errors.cexp}
                       variant="outlined"
-                    />
+                    >
+                           {["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"].map(month => (
+                        <MenuItem key={month} value={month}>{month}</MenuItem>
+                       ))}
+                   
+                    </MuiSelect>
                   </FormControl>
                 </Grid>
 
@@ -145,16 +151,22 @@ export default function CreditCardForm() {
                     }}
                   >
                     <MuiSelect
-                      type="number"
+                      type="select"
                       id="expirationYear"
                       name="expirationYear"
                       placeholder="YY"
                       value={values.expirationYear}
                       onChange={handleChange}
                       onFocus={handleFocus}
-                      //  isValid={errors.ccvc}
+                       isValid={errors.ccvv}
                       variant="outlined"
-                    />
+
+                    >
+                       {["2022", "2023", "2024", "2025", "2026", "2027"].map(year => (
+                        <MenuItem  key={year} value={year}>{year}</MenuItem>
+                       ))}
+                        
+                    </MuiSelect>
                   </FormControl>
                 </Grid>
 
@@ -173,14 +185,14 @@ export default function CreditCardForm() {
                     </FormHelperText>
                     <TextField
                       type="number"
-                      id="cardCvc"
-                      data-testid="cardCvc"
-                      name="cardCvc"
+                      id="cardSecurityCode"
+                  
+                      name="cardSecurityCode"
                       placeholder="CVC"
                       value={values.cardSecurityCode}
                       onChange={handleChange}
                       onFocus={handleFocus}
-                      //  isValid={errors.cpostal}
+                       isValid={errors.cpostal}
                       variant="outlined"
                     />
                   </FormControl>
@@ -194,6 +206,7 @@ export default function CreditCardForm() {
                 data-testid="validateButton"
                 id="validateButton"
                 type="submit"
+               
                 fullWidth
                 variant="contained"
               >
@@ -201,16 +214,18 @@ export default function CreditCardForm() {
               </Button>
             </Grid>
           </CardContent>
-          <Alert
-            severity="error"
-            id="alertMessage"
-            data-testid="alertMessage"
-            variant={errors.variant}
-            show={errors.show}
-          >
+
+           {errors.show && <Alert 
+           id="alertMessage"
+           variant={errors.variant}
+           severity="error"
+        
+           >
+             
             {errors.message}
-          </Alert>
+          </Alert>}
         </Card>
+        </form>
       </Grid>
     </Grid>
   );

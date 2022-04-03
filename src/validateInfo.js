@@ -3,11 +3,12 @@ import valid from "card-validator";
 export default function validateInfo(values) {
   let errors = {};
   let creditCard = valid.number(values.cardNumber);
-
-  creditCard.expirationDate = valid.expirationDate(values.cardExpiration);
+  let cardExpiration = new Date(values.expirationYear, values.expirationMonth -1).toString();
+  
+  creditCard.expirationDate = valid.expirationDate(cardExpiration);
   creditCard.cvv = valid.cvv(values.cardSecurityCode);
   creditCard.cardholderName = valid.cardholderName(values.cardName);
-  creditCard.postalCode = valid.postalCode(values.cardPostalCode);
+  creditCard.postalCode = valid.postalCode(values.cardSecurityCode);
 
   errors.show = true;
   errors.variant = "danger";
@@ -19,7 +20,7 @@ export default function validateInfo(values) {
   errors.ccvv = false;
   errors.cpostal = false;
 
-  if (values.cardPostalCode === null || !values.cardPostalCode.trim()) {
+  if (values.cardSecurityCode === null || !values.cardSecurityCode.trim()) {
     errors.message = "Credit card postal code is not complete";
   } else if (creditCard.postalCode.isValid) {
     errors.cpostal = true;
@@ -37,7 +38,7 @@ export default function validateInfo(values) {
   }
 
   //Card Expiration Verification
-  if (values.cardExpiration === null || !values.cardExpiration.trim()) {
+  if (cardExpiration === null || !cardExpiration.trim()) {
     errors.message = "Credit card expiration date is not complete";
   } else if (creditCard.expirationDate.isValid) {
     errors.cexp = true;
