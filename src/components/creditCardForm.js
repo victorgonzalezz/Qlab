@@ -15,7 +15,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import FormHelperText from "@mui/material/FormHelperText";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Alert, MenuItem } from "@mui/material";
+import { Alert, MenuItem, AlertTitle } from "@mui/material";
 
 export const MuiSelect = styled((props) => (
   <Select {...props} IconComponent={ExpandMoreIcon} />
@@ -58,173 +58,182 @@ export default function CreditCardForm() {
       </Box>
       <Grid container xs={12} sm={12} item justifyContent="center">
         <form onSubmit={handleSubmit}>
-        <Card sx={{ margin: 2, borderRadius: 5, maxWidth: 480 }}>
-          <CardContent sx={{ marginTop: "8rem" }}>
-            <Grid xs={12} sm={12} item>
+          <Card sx={{ margin: 2, borderRadius: 5, maxWidth: 480 }}>
+            <CardContent sx={{ marginTop: "8rem" }}>
+              <Grid xs={12} sm={12} item>
+                <FormControl fullWidth variant="outlined">
+                  <FormHelperText id="card-number" sx={{ ...textStyle }}>
+                    Card Number
+                  </FormHelperText>
+                  <TextField
+                    type="number"
+                    id="cardNumber"
+                    // data-testid="cardNumber"
+                    name="cardNumber"
+                    placeholder="Card Number"
+                    value={values.cardNumber}
+                    onChange={handleChange}
+                    onFocus={handleFocus}
+                    isValid={errors.cnumber}
+                    variant="outlined"
+                  />
+                </FormControl>
 
-              <FormControl fullWidth variant="outlined">
-                <FormHelperText id="card-number" sx={{ ...textStyle }}>
-                  Card Number
-                </FormHelperText>
-                <TextField
-                  type="number"
-                  id="cardNumber"
-                  // data-testid="cardNumber"
-                  name="cardNumber"
-                  placeholder="Card Number"
-                  value={values.cardNumber}
-                  onChange={handleChange}
-                  onFocus={handleFocus}
-                  isValid={errors.cnumber}
-                  
+                <FormControl
+                  fullWidth
                   variant="outlined"
-                />
-              </FormControl>
-
-              <FormControl
-                fullWidth
-                variant="outlined"
-                sx={{ marginTop: "2rem" }}
-              >
-                <FormHelperText id="card-name" sx={{ ...textStyle }}>
-                  Card Name
-                </FormHelperText>
-                <TextField
-                  type="text"
-                  id="cardName"
-                  data-testid="cardName"
-                  name="cardName"
-                  placeholder="Cardholder Name"
-                  value={values.cardName}
-                  onChange={handleChange}
-                  onFocus={handleFocus}
-                
-                   isValid={errors.cname}
-                  variant="outlined"
-                />
-              </FormControl>
-
-              <Grid container xs={12} sm={12} item direction={"row"}>
-                <Grid xs={12} sm={4}>
-                  <FormControl
+                  sx={{ marginTop: "2rem" }}
+                >
+                  <FormHelperText id="card-name" sx={{ ...textStyle }}>
+                    Card Name
+                  </FormHelperText>
+                  <TextField
+                    type="text"
+                    id="cardName"
+                    data-testid="cardName"
+                    name="cardName"
+                    placeholder="Cardholder Name"
+                    value={values.cardName}
+                    onChange={handleChange}
+                    onFocus={handleFocus}
+                    isValid={errors.cname}
                     variant="outlined"
-                    sx={{
-                      width: "125px",
-                      maxWidth: "125px",
-                      marginTop: "2rem",
-                      marginLeft: "-1.4rem",
-                    }}
-                  >
-                    <FormHelperText
-                      id="expiration-date"
-                      sx={{ ...textStyle, fontSize: "12px" }}
-                    >
-                      Expiration Date
-                    </FormHelperText>
-                    <MuiSelect
-                      type="select"
-                      id="expirationMonth"
-                      name="expirationMonth"
-                      placeholder="MM"
-                      value={values.expirationMonth}
-                      onChange={handleChange}
-                      onFocus={handleFocus}
-                      isValid={errors.cexp}
-                      variant="outlined"
-                    >
-                           {["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"].map(month => (
-                        <MenuItem key={month} value={month}>{month}</MenuItem>
-                       ))}
-                   
-                    </MuiSelect>
-                  </FormControl>
-                </Grid>
+                  />
+                </FormControl>
 
-                <Grid xs={12} sm={4}>
-                  <FormControl
-                    variant="outlined"
-                    sx={{
-                      maxWidth: "125px",
-                      width: "125px",
-                      marginTop: "3.2rem",
-                      marginLeft: "-1.7rem",
-                    }}
-                  >
-                    <MuiSelect
-                      type="select"
-                      id="expirationYear"
-                      name="expirationYear"
-                      placeholder="YY"
-                      value={values.expirationYear}
-                      onChange={handleChange}
-                      onFocus={handleFocus}
-                       isValid={errors.ccvv}
+                <Grid container xs={12} sm={12} item direction={"row"}>
+                  <Grid xs={12} sm={4}>
+                    <FormControl
                       variant="outlined"
-
+                      sx={{
+                        width: "125px",
+                        maxWidth: "125px",
+                        marginTop: "2rem",
+                        marginLeft: "-1.4rem",
+                      }}
                     >
-                       {["2022", "2023", "2024", "2025", "2026", "2027"].map(year => (
-                        <MenuItem  key={year} value={year}>{year}</MenuItem>
-                       ))}
-                        
-                    </MuiSelect>
-                  </FormControl>
-                </Grid>
+                      <FormHelperText
+                        id="expiration-date"
+                        sx={{ ...textStyle, fontSize: "12px" }}
+                      >
+                        Expiration Date
+                      </FormHelperText>
+                      <MuiSelect
+                        type="select"
+                        id="cardExpirationMonth"
+                        name="expirationMonth"
+                        value={values.expirationMonth}
+                        onChange={handleChange}
+                        onFocus={handleFocus}
+                        isValid={errors.cexp}
+                        variant="outlined"
+                      >
+                        {[
+                          "01",
+                          "02",
+                          "03",
+                          "04",
+                          "05",
+                          "06",
+                          "07",
+                          "08",
+                          "09",
+                          "10",
+                          "11",
+                          "12",
+                        ].map((month) => (
+                          <MenuItem key={month} value={month}>
+                            {month}
+                          </MenuItem>
+                        ))}
+                      </MuiSelect>
+                    </FormControl>
+                  </Grid>
 
-                <Grid xs={12} sm={4}>
-                  <FormControl
-                    variant="outlined"
-                    sx={{
-                      maxWidth: "125px",
-                      width: "125px",
-                      marginTop: "2rem",
-                      marginRight: "-1.4rem",
-                    }}
-                  >
-                    <FormHelperText id="cvc" sx={{ ...textStyle }}>
-                      CVV
-                    </FormHelperText>
-                    <TextField
-                      type="number"
-                      id="cardSecurityCode"
-                  
-                      name="cardSecurityCode"
-                      placeholder="CVC"
-                      value={values.cardSecurityCode}
-                      onChange={handleChange}
-                      onFocus={handleFocus}
-                       isValid={errors.cpostal}
+                  <Grid xs={12} sm={4}>
+                    <FormControl
                       variant="outlined"
-                    />
-                  </FormControl>
+                      sx={{
+                        maxWidth: "125px",
+                        width: "125px",
+                        marginTop: "3.2rem",
+                        marginLeft: "-1.7rem",
+                      }}
+                    >
+                      <MuiSelect
+                        type="select"
+                        id="cardExpirationYear"
+                        name="expirationYear"
+                        value={values.expirationYear}
+                        onChange={handleChange}
+                        onFocus={handleFocus}
+                        isValid={errors.cexp}
+                        variant="outlined"
+                      >
+                        {["2022", "2023", "2024", "2025", "2026", "2027"].map(
+                          (year) => (
+                            <MenuItem key={year} value={year}>
+                              {year}
+                            </MenuItem>
+                          )
+                        )}
+                      </MuiSelect>
+                    </FormControl>
+                  </Grid>
+
+                  <Grid xs={12} sm={4}>
+                    <FormControl
+                      variant="outlined"
+                      sx={{
+                        maxWidth: "125px",
+                        width: "125px",
+                        marginTop: "2rem",
+                        marginRight: "-1.4rem",
+                      }}
+                    >
+                      <FormHelperText id="cvc" sx={{ ...textStyle }}>
+                        CVV
+                      </FormHelperText>
+                      <TextField
+                        type="number"
+                        id="cardSecurityCode"
+                        name="cardSecurityCode"
+                        placeholder="CVC"
+                        value={values.cardSecurityCode}
+                        onChange={handleChange}
+                        onFocus={handleFocus}
+                        isValid={errors.cvv}
+                        variant="outlined"
+                      />
+                    </FormControl>
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
 
-            <Grid xs={12} sm={12} sx={{ marginTop: "2rem" }}>
-              <Button
-                size={"block"}
-                data-testid="validateButton"
-                id="validateButton"
-                type="submit"
-               
-                fullWidth
-                variant="contained"
+              <Grid xs={12} sm={12} sx={{ marginTop: "2rem" }}>
+                <Button
+                  size={"block"}
+                  data-testid="validateButton"
+                  id="validateButton"
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                >
+                  Submit
+                </Button>
+              </Grid>
+            </CardContent>
+
+            {errors.show && (
+              <Alert
+                severity={
+                  errors.variant !== "success" ? "error" : errors.variant
+                }
               >
-                Submit
-              </Button>
-            </Grid>
-          </CardContent>
-
-           {errors.show && <Alert 
-           id="alertMessage"
-           variant={errors.variant}
-           severity="error"
-        
-           >
-             
-            {errors.message}
-          </Alert>}
-        </Card>
+                {errors.message}
+              </Alert>
+            )}
+          </Card>
         </form>
       </Grid>
     </Grid>

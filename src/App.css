@@ -1,7 +1,7 @@
 .App {
   padding: 7rem;
   text-align: center;
-  background-color: rgba(122,222,222);
+  background-image: url("https://images.prismic.io/queenslab/0d94da99-a6ee-4d3d-a2f8-4ed15152d1ef_QUEENSLAB_2019.png?auto=format%2Ccompress&rect=27%2C111%2C2473%2C1605&w=1851&h=1202&fit=max&q=50");
 }
 
 input {

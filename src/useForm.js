@@ -5,7 +5,6 @@ const useForm = () => {
     const [values, setValues] = useState({
         cardName: '',
         cardNumber: '',
-        cardType: '',
         expirationMonth: '',
         expirationYear: '',
         cardSecurityCode: '',
@@ -20,6 +19,8 @@ const useForm = () => {
             focus: (e.target.name === 'cardSecurityCode') ? 'cvc' : e.target.name
         });
     }
+      
+  console.log(handleFocus, "2")
 
     const handleChange = e => {
         const { name, value } = e.target
@@ -29,10 +30,7 @@ const useForm = () => {
         })
     }
 
-    const handleSubmit = e => {
-      console.log(e, "oi")
-      console.log(values, "oi")
-      
+    const handleSubmit = e => {      
         e.preventDefault()
         setErrors(validateInfo(values))
     };
