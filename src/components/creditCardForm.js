@@ -179,7 +179,7 @@ export default function CreditCardForm() {
                             <MenuItem
                               key={year}
                               value={year}
-                              data-testid={`cardExpirationMonthOption-${year}`}
+                              data-testid={`cardExpirationYearOption-${year}`}
                             >
                               {year}
                             </MenuItem>

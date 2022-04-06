@@ -124,8 +124,8 @@ describe("test empty fields", () => {
     expect(alertMessage).toBe("Credit card number is not complete");
   });
 
-  test.each(errors)("submit empty field", async (_index, err) => {
-    let values = emptyField(err[0], "");
+  test.each(errors)("submit empty field", async (index, err) => {
+    let values = emptyField(index, "");
     await fillForm(values, page);
 
     let alertMessage = await page.$eval(
@@ -167,7 +167,7 @@ describe("test invalid fields", () => {
   const errors = [
     [0, "Credit card number is invalid", "411111111111111111111111"],
     [1, "Name is invalid", "4111111111111111"],
-    [2, "CVC is invalid", "0"],
+    [4, "CVC is invalid", "0"],
   ];
 
   beforeEach(async () => {
