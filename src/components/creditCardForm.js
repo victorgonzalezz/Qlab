@@ -17,7 +17,7 @@ import FormHelperText from "@mui/material/FormHelperText";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Alert, MenuItem } from "@mui/material";
 
-export const MuiSelect = styled(({isValid, ...props}) => (
+export const MuiSelect = styled(({ isValid, ...props }) => (
   <Select {...props} IconComponent={ExpandMoreIcon} />
 ))(({ theme }) => ({
   "& .MuiSelect-icon": {
@@ -142,7 +142,11 @@ export default function CreditCardForm() {
                           "11",
                           "12",
                         ].map((month) => (
-                          <MenuItem key={month} value={month}>
+                          <MenuItem
+                            key={month}
+                            value={month}
+                            data-testid={`cardExpirationMonthOption-${month}`}
+                          >
                             {month}
                           </MenuItem>
                         ))}
@@ -172,7 +176,11 @@ export default function CreditCardForm() {
                       >
                         {["2022", "2023", "2024", "2025", "2026", "2027"].map(
                           (year) => (
-                            <MenuItem key={year} value={year}>
+                            <MenuItem
+                              key={year}
+                              value={year}
+                              data-testid={`cardExpirationMonthOption-${year}`}
+                            >
                               {year}
                             </MenuItem>
                           )

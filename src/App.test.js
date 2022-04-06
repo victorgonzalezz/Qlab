@@ -23,11 +23,15 @@ async function fillForm(values, page) {
   await page.click("input#cardName");
   await page.type("input#cardName", values.cardName);
 
-  await page.click('[data-testid="cardExpirationMonth"]');
-  await page.type('[data-testid="cardExpirationMonth"]', values.cardExpirationMonth);
-
-  await page.click('[data-testid="cardExpirationYear"]');
-  await page.type('[data-testid="cardExpirationYear"]', values.cardExpirationYear);
+  if (values.cardExpirationMonth) {
+    await page.click('[data-testid="cardExpirationMonth"]');
+    await page.click(`[data-testid="cardExpirationMonthOption-${values.cardExpirationMonth}"]`);
+  }
+  
+  if (values.cardExpirationYear) {
+    await page.click('[data-testid="cardExpirationYear"]');
+    await page.click(`[data-testid="cardExpirationYearOption-${values.cardExpirationYear}"]`);
+  }
 
   await page.click("input#cardSecurityCode");
   await page.type("input#cardSecurityCode", values.cardSecurityCode);
@@ -102,8 +106,7 @@ describe("test empty fields", () => {
   const errors = [
     [0, "Credit card number is not complete"],
     [1, "Name is not complete"],
-    [2, "Credit card expiration date is not complete"],
-    [3, "CVV is not complete"],
+    [4, "CVV is not complete"],
   ];
 
   beforeEach(async () => {
@@ -121,8 +124,8 @@ describe("test empty fields", () => {
     expect(alertMessage).toBe("Credit card number is not complete");
   });
 
-  test.each(errors)("submit empty field", async (index, err) => {
-    let values = emptyField(index, "");
+  test.each(errors)("submit empty field", async (_index, err) => {
+    let values = emptyField(err[0], "");
     await fillForm(values, page);
 
     let alertMessage = await page.$eval(
@@ -164,9 +167,7 @@ describe("test invalid fields", () => {
   const errors = [
     [0, "Credit card number is invalid", "411111111111111111111111"],
     [1, "Name is invalid", "4111111111111111"],
-    [2, "Credit card expiration date is invalid", "050"],
-    [3, "Credit card expiration date is invalid", "20232"],
-    [4, "CVC is invalid", "0"],
+    [2, "CVC is invalid", "0"],
   ];
 
   beforeEach(async () => {
@@ -174,6 +175,7 @@ describe("test invalid fields", () => {
     page = await browser.newPage();
     await page.goto("http://localhost:3000/");
   });
+  
 
   test.each(errors)("submit empty field", async (index, err, val) => {
     let values = emptyField(index, val);
