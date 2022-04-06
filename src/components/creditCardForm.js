@@ -15,9 +15,9 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import FormHelperText from "@mui/material/FormHelperText";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Alert, MenuItem, AlertTitle } from "@mui/material";
+import { Alert, MenuItem } from "@mui/material";
 
-export const MuiSelect = styled((props) => (
+export const MuiSelect = styled(({isValid, ...props}) => (
   <Select {...props} IconComponent={ExpandMoreIcon} />
 ))(({ theme }) => ({
   "& .MuiSelect-icon": {
@@ -56,11 +56,11 @@ export default function CreditCardForm() {
           focused={values.focus}
         />
       </Box>
-      <Grid container xs={12} sm={12} item justifyContent="center">
+      <Grid container justifyContent="center">
         <form onSubmit={handleSubmit}>
           <Card sx={{ margin: 2, borderRadius: 5, maxWidth: 480 }}>
             <CardContent sx={{ marginTop: "8rem" }}>
-              <Grid xs={12} sm={12} item>
+              <Grid item xs={12} sm={12}>
                 <FormControl fullWidth variant="outlined">
                   <FormHelperText id="card-number" sx={{ ...textStyle }}>
                     Card Number
@@ -101,8 +101,8 @@ export default function CreditCardForm() {
                   />
                 </FormControl>
 
-                <Grid container xs={12} sm={12} item direction={"row"}>
-                  <Grid xs={12} sm={4}>
+                <Grid container item direction={"row"}>
+                  <Grid item xs={12} sm={4}>
                     <FormControl
                       variant="outlined"
                       sx={{
@@ -120,7 +120,7 @@ export default function CreditCardForm() {
                       </FormHelperText>
                       <MuiSelect
                         type="select"
-                        id="cardExpirationMonth"
+                        data-testid="cardExpirationMonth"
                         name="expirationMonth"
                         value={values.expirationMonth}
                         onChange={handleChange}
@@ -150,7 +150,7 @@ export default function CreditCardForm() {
                     </FormControl>
                   </Grid>
 
-                  <Grid xs={12} sm={4}>
+                  <Grid item xs={12} sm={4}>
                     <FormControl
                       variant="outlined"
                       sx={{
@@ -162,7 +162,7 @@ export default function CreditCardForm() {
                     >
                       <MuiSelect
                         type="select"
-                        id="cardExpirationYear"
+                        data-testid="cardExpirationYear"
                         name="expirationYear"
                         value={values.expirationYear}
                         onChange={handleChange}
@@ -181,7 +181,7 @@ export default function CreditCardForm() {
                     </FormControl>
                   </Grid>
 
-                  <Grid xs={12} sm={4}>
+                  <Grid xs={12} sm={4} item>
                     <FormControl
                       variant="outlined"
                       sx={{
@@ -198,7 +198,7 @@ export default function CreditCardForm() {
                         type="number"
                         id="cardSecurityCode"
                         name="cardSecurityCode"
-                        placeholder="CVC"
+                        placeholder="CVV"
                         value={values.cardSecurityCode}
                         onChange={handleChange}
                         onFocus={handleFocus}
@@ -210,7 +210,7 @@ export default function CreditCardForm() {
                 </Grid>
               </Grid>
 
-              <Grid xs={12} sm={12} sx={{ marginTop: "2rem" }}>
+              <Grid xs={12} sm={12} sx={{ marginTop: "2rem" }} item>
                 <Button
                   size={"block"}
                   data-testid="validateButton"
@@ -226,6 +226,8 @@ export default function CreditCardForm() {
 
             {errors.show && (
               <Alert
+                id="alertMessage"
+                data-testid="alertMessage"
                 severity={
                   errors.variant !== "success" ? "error" : errors.variant
                 }
