@@ -17,7 +17,7 @@ import FormHelperText from "@mui/material/FormHelperText";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Alert, MenuItem } from "@mui/material";
 
-export const MuiSelect = styled((props) => (
+export const MuiSelect = styled(({ isValid, ...props }) => (
   <Select {...props} IconComponent={ExpandMoreIcon} />
 ))(({ theme }) => ({
   "& .MuiSelect-icon": {
@@ -56,11 +56,11 @@ export default function CreditCardForm() {
           focused={values.focus}
         />
       </Box>
-      <Grid container xs={12} sm={12} item justifyContent="center">
+      <Grid container justifyContent="center">
         <form onSubmit={handleSubmit}>
           <Card sx={{ margin: 2, borderRadius: 5, maxWidth: 480 }}>
             <CardContent sx={{ marginTop: "8rem" }}>
-              <Grid xs={12} sm={12} item>
+              <Grid item xs={12} sm={12}>
                 <FormControl fullWidth variant="outlined">
                   <FormHelperText id="card-number" sx={{ ...textStyle }}>
                     Card Number
@@ -68,7 +68,6 @@ export default function CreditCardForm() {
                   <TextField
                     type="number"
                     id="cardNumber"
-                    // data-testid="cardNumber"
                     name="cardNumber"
                     placeholder="Card Number"
                     value={values.cardNumber}
@@ -90,7 +89,6 @@ export default function CreditCardForm() {
                   <TextField
                     type="text"
                     id="cardName"
-                    data-testid="cardName"
                     name="cardName"
                     placeholder="Cardholder Name"
                     value={values.cardName}
@@ -101,8 +99,8 @@ export default function CreditCardForm() {
                   />
                 </FormControl>
 
-                <Grid container xs={12} sm={12} item direction={"row"}>
-                  <Grid xs={12} sm={4}>
+                <Grid container item direction={"row"}>
+                  <Grid item xs={12} sm={4}>
                     <FormControl
                       variant="outlined"
                       sx={{
@@ -120,6 +118,7 @@ export default function CreditCardForm() {
                       </FormHelperText>
                       <MuiSelect
                         type="select"
+                        id="cardExpirationMonth"
                         data-testid="cardExpirationMonth"
                         name="expirationMonth"
                         value={values.expirationMonth}
@@ -142,7 +141,11 @@ export default function CreditCardForm() {
                           "11",
                           "12",
                         ].map((month) => (
-                          <MenuItem key={month} value={month}>
+                          <MenuItem
+                            key={month}
+                            value={month}
+                            data-testid={`cardExpirationMonthOption-${month}`}
+                          >
                             {month}
                           </MenuItem>
                         ))}
@@ -150,7 +153,7 @@ export default function CreditCardForm() {
                     </FormControl>
                   </Grid>
 
-                  <Grid xs={12} sm={4}>
+                  <Grid item xs={12} sm={4}>
                     <FormControl
                       variant="outlined"
                       sx={{
@@ -162,6 +165,7 @@ export default function CreditCardForm() {
                     >
                       <MuiSelect
                         type="select"
+                        id="cardExpirationYear"
                         data-testid="cardExpirationYear"
                         name="expirationYear"
                         value={values.expirationYear}
@@ -172,7 +176,11 @@ export default function CreditCardForm() {
                       >
                         {["2022", "2023", "2024", "2025", "2026", "2027"].map(
                           (year) => (
-                            <MenuItem key={year} value={year}>
+                            <MenuItem
+                              key={year}
+                              value={year}
+                              data-testid={`cardExpirationYearOption-${year}`}
+                            >
                               {year}
                             </MenuItem>
                           )
@@ -181,7 +189,7 @@ export default function CreditCardForm() {
                     </FormControl>
                   </Grid>
 
-                  <Grid xs={12} sm={4}>
+                  <Grid xs={12} sm={4} item>
                     <FormControl
                       variant="outlined"
                       sx={{
@@ -198,7 +206,7 @@ export default function CreditCardForm() {
                         type="number"
                         id="cardSecurityCode"
                         name="cardSecurityCode"
-                        placeholder="CVC"
+                        placeholder="CVV"
                         value={values.cardSecurityCode}
                         onChange={handleChange}
                         onFocus={handleFocus}
@@ -210,10 +218,10 @@ export default function CreditCardForm() {
                 </Grid>
               </Grid>
 
-              <Grid xs={12} sm={12} sx={{ marginTop: "2rem" }}>
+              <Grid xs={12} sm={12} sx={{ marginTop: "2rem" }} item>
                 <Button
                   size={"block"}
-                  data-testid="validateButton"
+                  // data-testid="validateButton"
                   id="validateButton"
                   type="submit"
                   fullWidth
@@ -226,6 +234,8 @@ export default function CreditCardForm() {
 
             {errors.show && (
               <Alert
+                id="alertMessage"
+                // data-testid="alertMessage"
                 severity={
                   errors.variant !== "success" ? "error" : errors.variant
                 }
