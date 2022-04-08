@@ -1,10 +1,5 @@
 import puppeteer from "puppeteer";
 
-const MaterialSelect = async (page, cssSelector, newSelectedValue) => {
-  await expect(page).toClick(cssSelector);
-  await expect(page).toClick(`li[data-value="${newSelectedValue}"]`);
-}
-
 let browser, page;
 
 const valid_values = {
@@ -23,21 +18,16 @@ async function fillForm(values, page) {
   await page.click("input#cardName");
   await page.type("input#cardName", values.cardName);
 
-  if (values.cardExpirationMonth) {
-    await page.click('[data-testid="cardExpirationMonth"]');
-    await page.click(`[data-testid="cardExpirationMonthOption-${values.cardExpirationMonth}"]`);
-  }
-  
-  if (values.cardExpirationYear) {
-    await page.click('[data-testid="cardExpirationYear"]');
-    await page.click(`[data-testid="cardExpirationYearOption-${values.cardExpirationYear}"]`);
-  }
+  await page.click('[data-testid="cardExpirationMonth"]');
+  await page.type('[data-testid="cardExpirationMonth"]', values.cardExpirationMonth);
+  await page.click('[data-testid="cardExpirationYear"]');
 
+  await page.type('[data-testid="cardExpirationYear"]', values.cardExpirationYear);
   await page.click("input#cardSecurityCode");
+
   await page.type("input#cardSecurityCode", values.cardSecurityCode);
 
   await page.click("button#validateButton");
-
 }
 
 // Create values object depending on which field is empty
@@ -105,8 +95,10 @@ describe("test card animations", () => {
 describe("test empty fields", () => {
   const errors = [
     [0, "Credit card number is not complete"],
-    [1, "Name is not complete"],
-    [4, "CVV is not complete"],
+    [1, "Cardholder name is not complete"],
+
+    [2, "Credit card expiration date is not complete"],
+    [3, "Credit card CVC is not complete"],
   ];
 
   beforeEach(async () => {
@@ -121,7 +113,7 @@ describe("test empty fields", () => {
       "div#alertMessage",
       (alert) => alert.textContent
     );
-    expect(alertMessage).toBe("Credit card number is not complete");
+    expect(alertMessage).toBe("Cardholder name is not complete");
   });
 
   test.each(errors)("submit empty field", async (index, err) => {
@@ -166,8 +158,10 @@ describe("test valid fields", () => {
 describe("test invalid fields", () => {
   const errors = [
     [0, "Credit card number is invalid", "411111111111111111111111"],
-    [1, "Name is invalid", "4111111111111111"],
-    [4, "CVC is invalid", "0"],
+    [1, "Cardholder name is invalid", "4111111111111111"],
+    [2, "Credit card expiration date is invalid", "050"],
+    [3, "Credit card expiration date is invalid", "20232"],
+    [4, "Credit card CVC is invalid", "0"],
   ];
 
   beforeEach(async () => {
@@ -175,7 +169,6 @@ describe("test invalid fields", () => {
     page = await browser.newPage();
     await page.goto("http://localhost:3000/");
   });
-  
 
   test.each(errors)("submit empty field", async (index, err, val) => {
     let values = emptyField(index, val);
